@@ -1,0 +1,69 @@
+<h4 align="center" id="my_category" class="upcase"></h4>
+<div class="row">
+  <ul class="list-group">
+    <% @stories['stories'].each do |s|%>
+      <div class="col-lg-3 col-xs-6">
+        <div class="panel panel-default">
+          <li class="list-group-item li_height">
+            <img alt="profile" class="image-thumb img-responsive" src="<%= "http://quintype-01.imgix.net/#{s['hero-image-s3-key']}"%>" height="150">
+
+            <h5 class="upcase"><%= s['tags'][0]['name'] %></h5>
+            <div class="heading">
+              <h4 title="<%= s['headline']%>"><%=truncate(s['headline'], length: 40)%></h4>
+            </div>
+            <div class="written_by self_gride_author">
+              <%= s['author-name']%>
+            </div>
+            <div class="published_on self_gride_bottom">
+              <%= Time.at(s['last-published-at']/1000.0).strftime("%B %d, %Y, %I:%M%p")%>
+            </div>
+          </li>
+        </div>
+      </div>
+    <%end%>
+  </ul>
+  </div>
+<style type="text/css">
+@media all and (min-width:1200px) {
+}
+@media all and (min-width:992px) and (max-width:1199px) {
+}
+@media all and (min-width:768px) and (max-width:991px) {
+
+.li_height{height: 277px !important;}
+}
+@media all and (min-width:650px) and (max-width:767px) {
+  .li_height{height: 345px !important;}
+}
+@media all and (min-width:541px) and (max-width:649px) {
+}
+@media all and (min-width:481px) and (max-width:540px) {
+}
+@media all and (min-width:321px) and (max-width:480px) {
+}
+@media all and (max-width:320px) {
+}
+
+.li_height{height: 299px;}
+.li_height1{height: 320px;}
+.self_gride_bottom{position: absolute; left: 15px; bottom: 5px;}
+.self_gride_author{position: absolute; left: 15px; bottom: 25px;}
+.grid_response_author{position: absolute; left: 15px; bottom: 40px;}
+.heading{
+  /*height: 85px;*/
+}
+.image-thumb{
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: inline-block;
+    height: 50;
+    width: 100%;
+    line-height: 1.42857;
+    max-width: 100%;
+    padding: 4px;
+}
+.upcase{text-transform: uppercase;}
+.written_by{color:#808080; font-weight: 600;}
+.published_on{color: #808080}
+</style>

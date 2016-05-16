@@ -1,0 +1,80 @@
+<h1>Listing Tasks</h1>
+
+<table class="table table-bordered">
+  <thead>
+    <%unless @tasks.blank?%>
+      <tr>
+        <th>Name</th>
+        <th>Asigned to</th>
+        <th>Project</th>
+        <th>Status</th>
+        <th colspan="3"></th>
+      </tr>
+      <% else %>
+        <h4>No Tasks Created</h4>
+    <%end%>
+  </thead>
+
+  <tbody>
+    <% @tasks.each do |task| %>
+      <tr>
+        <td><%= task.name %></td>
+        <td><%= task.asigned_to.blank? ? "N/A" : task.asigned_to %></td>
+        <td><%= task.project.name %></td>
+        <td>&nbsp;
+          <%= task.status %>
+          <div class="circle-<%= task.status %>" style="float:left"></div>
+        </td>
+        <td>
+          <%= link_to 'Show', project_task_path(task.project_id, task), class: 'btn btn-xs btn-success' %>&nbsp;
+          <%= link_to 'Edit', edit_project_task_path(task.project_id, task), class: 'btn btn-xs btn-primary' %>&nbsp;
+          <%= link_to 'Destroy', project_task_path(task.project_id, task), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-xs btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+<div class="circle-red"></div>
+<div class="circle-green"></div>
+<div class="circle-yellow"></div>
+<%= link_to 'New Task', new_project_task_path, class: 'btn btn-xs btn-success' %>
+
+<script type="text/javascript">
+
+
+
+</script>
+
+
+<style type="text/css">
+.circle-0 { 
+   width: 15px;
+   height: 15px;
+   background: red; 
+   -moz-border-radius: 70px; 
+   -webkit-border-radius: 70px; 
+   border-radius: 70px;
+}
+
+.circle-50 { 
+   width: 15px;
+   height: 15px;
+   background: yellow; 
+   -moz-border-radius: 70px; 
+   -webkit-border-radius: 70px; 
+   border-radius: 70px;
+}
+
+.circle-100 { 
+   width: 15px;
+   height: 15px;
+   background: green; 
+   -moz-border-radius: 70px; 
+   -webkit-border-radius: 70px; 
+   border-radius: 70px;
+}
+
+
+</style>

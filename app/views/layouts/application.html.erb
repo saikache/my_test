@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= content_for?(:title) ? yield(:title) : "Manage" %></title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag "application", :media => "all" %>
+
+    <!-- For all other devices -->
+    <!-- Size should be 32 x 32 pixels -->
+    <%#= favicon_link_tag 'favicon.ico', :rel => 'shortcut icon' %>
+
+    <%= javascript_include_tag "application" %>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js" type="text/javascript"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <nav class="navbar navbar-default  no-margin">
+      <div class="collapse navbar-collapse pull-left" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="active" ><button class="navbar-toggle collapse in" data-toggle="collapse" id="menu-toggle-2"> 
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </li>
+        </ul>
+      </div>
+      <div class="navbar-header fixed-brand">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"  id="menu-toggle">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Quintype</a>
+      </div>
+    </nav>
+    <div id="wrapper">
+      <div id="sidebar-wrapper">
+          <ul class="sidebar-nav nav-pills nav-stacked" id="menu">
+            <% @side_linkes.each do |section|%>
+              <li>
+                <a href="<%=section['section-name'] ? section['section-name'] : ''%>"><%=section['title'] ? section['title'] : ''%> </a>
+              </li>
+            <%end%>
+          </ul>
+      </div>
+      <div>
+        <div id="sidebar-wrapper">
+          <ul class="sidebar-nav nav-pills nav-stacked" id="menu">
+            <% @side_linkes.each do |section|%>
+              <li>
+                <a href="<%=section['section-name'] ? section['section-name'] : '#'%>" class="side_links"><%=section['title'] ? section['title'] : ''%> </a>
+              </li>
+            <%end%>
+          </ul>
+        </div>
+        <div id="page-content-wrapper">
+          <div class="container-fluid xyz">
+            <div class="row">
+              <div align="center" class="loader_image" style="display:none">
+                <img src="/assets/1.gif">
+              </div>
+              <%= yield%>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+<script type="text/javascript">
+$('.side_links').click(function (event){ 
+  event.preventDefault();
+  $('body').css('opacity','0.5')
+  // $('.loader_image').css('display','block')
+  $(".loader_image").show()
+  var stories_by_category = "http://sketches.quintype.com/api/v1/stories?section=" + $(this).attr('href')
+  $.ajax({
+    url: stories_by_category,
+    success: function(response) {
+    $(".list-group").html('')
+    $(".loader_image").hide()
+    $('body').css('opacity','1')
+        var article_html = ''
+        if (response['stories'].length == 0) {
+          $("#my_category").html("No Results Found")
+        }
+        for (i = 0; i < response['stories'].length; i++) {
+          article_html +=  "<div class='col-lg-3 col-xs-6'><div class='panel panel-default'> <li class='list-group-item li_height1'>"
+          article_html += "<img class='image-thumb' src="+ 'http://quintype-01.imgix.net/' +response['stories'][i]['hero-image-s3-key'] +" height='150'>"
+          article_html += "<h5 class='upcase'>" + response['stories'][i]['sections'][0]['name'] +" </h5>"
+          var heading = jQuery.trim(response['stories'][i]['headline']).substring(0, 40).split(" ").join(" ") + "...";
+          article_html   +=  "<div class='heading'><h4 title='"+response['stories'][i]['headline']+"' class=''> " + heading + "</h4></div>"
+          article_html += "<div class='written_by grid_response_author'>"+ response['stories'][i]['author-name'] +"</div>"
+          article_html += "<div class='published_on self_gride_bottom'>" + new Date(response['stories'][i]['last-published-at']) + "</div>"
+          article_html += "</li></div></div>"
+          $("#my_category").html(response['stories'][i]['sections'][0]['name'])
+        }
+        $(".list-group").append(article_html)
+      }
+  })
+  return false;
+});
+
+$("#menu-toggle").click(function(e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+  });
+     $("#menu-toggle-2").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled-2");
+        $('#menu ul').hide();
+    });
+
+     function initMenu() {
+      $('#menu ul').hide();
+      $('#menu ul').children('.current').parent().show();
+      //$('#menu ul:first').show();
+      $('#menu li a').click(
+        function() {
+          var checkElement = $(this).next();
+          if((checkElement.is('ul')) && (checkElement.is(':visible'))) {
+            return false;
+            }
+          if((checkElement.is('ul')) && (!checkElement.is(':visible'))) {
+            $('#menu ul:visible').slideUp('normal');
+            checkElement.slideDown('normal');
+            return false;
+            }
+          }
+        );
+      }
+    $(document).ready(function() {initMenu();});
+</script>

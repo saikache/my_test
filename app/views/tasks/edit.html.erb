@@ -1,0 +1,8 @@
+<h3>Editing Task</h3>
+<span>Project Name: <b style="color:#890000"><%= @task.project.name %></b> </span>
+<hr>
+<%= render 'form' %>
+
+
+<%= link_to 'Back', project_tasks_path(@task.project), class: 'btn btn-xs btn-warning' %>
+<%#= link_to 'Back', tasks_path %>

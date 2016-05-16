@@ -1,0 +1,19 @@
+
+<p>
+  <strong>Name:</strong>
+  <%= @project.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @project.description %>
+</p>
+
+<p>
+  <strong>Created by:</strong>
+  <%= @project.created_by %>
+</p>
+
+<%= link_to 'Edit', edit_project_path(@project), class: 'btn btn-xs btn-danger' %> 
+<%= link_to 'Back', projects_path, class: 'btn btn-xs btn-success' %>
+<%= link_to 'Create Task', project_tasks_path(@project), class: 'btn btn-xs btn-info' %>

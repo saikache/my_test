@@ -1,0 +1,39 @@
+
+<h1>Listing Projects</h1>
+
+<table class="table table-bordered">
+  <thead>
+    <%unless @projects.blank?%>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Created by</th>
+        <th>Tasks</th>
+        <th></th>
+        <th></th>
+        <th colspan="3"></th>
+      </tr>
+    <%else%>
+      <br>
+      <h4 style="color:red">No Projects Available</h4>
+    <%end%>
+  </thead>
+
+  <tbody>
+    <% @projects.each do |project| %>
+      <tr>
+        <td><%= project.name %></td>
+        <td><%= project.description %></td>
+        <td><%= project.created_by %></td>
+        <td><%= link_to "Tasks #{project.tasks.count}", project_tasks_path(project), class: 'btn btn-xs btn-success' %></td>
+        <td><%= link_to 'Show', project, class: 'btn btn-xs btn-info' %></td>
+        <td><%= link_to 'Edit', edit_project_path(project), class: 'btn btn-xs btn-warning' %></td>
+        <td><%= link_to 'Destroy', project, class: 'btn btn-xs btn-danger' , method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Project', new_project_path, class: 'btn btn-xs btn-success' %>

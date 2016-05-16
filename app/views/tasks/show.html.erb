@@ -1,0 +1,32 @@
+<p>
+  <strong>Name:</strong>
+  <%= @task.name %>
+</p>
+
+<p>
+  <strong>Asigned to:</strong>
+  <%= @task.asigned_to? ? @task.asigned_to : 'Not Assigned' %>
+</p>
+
+<p>
+  <strong>Project:</strong>
+  <%= @task.project.name %>
+</p>
+
+<p>
+  <strong>Start Date:</strong>
+  <%= @task.start_date.strftime("%d-%m-%Y") rescue '' %>
+</p>
+
+<p>
+  <strong>End Date:</strong>
+  <%= @task.end_date.strftime("%d-%m-%Y") rescue '' %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @task.status %>
+</p>
+
+<%= link_to 'Edit', edit_project_task_path(@task.project, @task), class: 'btn btn-primary' %> 
+<%= link_to 'Back', project_tasks_path(@task.project), class: 'btn btn-danger' %>
